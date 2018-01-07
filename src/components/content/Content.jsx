@@ -30,6 +30,7 @@ class Content extends React.Component {
         </div>
         <div>
           <Login endpoint={`${api_server}/api/user/login`} success={(res) => console.log("You are logged in")} />
+          <Register endpoint={`${api_server}/api/user/register`} success={(res) => console.log("You are now registered")} />
         </div>
       </div>
     );

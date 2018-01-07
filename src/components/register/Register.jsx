@@ -16,6 +16,8 @@ class Register extends React.Component {
         }
     }
     async Register(){
+        if(this.state.password == '' || this.state.username == '')
+            return;
         if(this.state.password !== this.state.confirm){
             this.setState({message: "Passwords do not match"});
             return;

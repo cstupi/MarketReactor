@@ -5,6 +5,8 @@ import React from 'react';
 import './Content.scss';
 import Login from '../login/Login.jsx';
 import Register from '../register/Register.jsx';
+import GameManager from '../game/GameManager.jsx';
+
 const api_server = "http://localhost:3001";
 class Content extends React.Component {  
   constructor(props) {
@@ -31,6 +33,9 @@ class Content extends React.Component {
         <div>
           <Login endpoint={`${api_server}/api/user/login`} success={(res) => console.log("You are logged in")} />
           <Register endpoint={`${api_server}/api/user/register`} success={(res) => console.log("You are now registered")} />
+        </div>
+        <div>
+          <GameManager endpoint={`${api_server}/api/game`} />
         </div>
       </div>
     );

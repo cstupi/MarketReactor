@@ -1,21 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import axios from '../../../node_modules/axios/dist/axios';
-
+import axios from 'axios';
+import moment from 'moment';
+axios.defaults.withCredentials = true;
 class CreateGame extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            name: '',
+            gamename: '',
             password: '',
-            startdate: new Date(),
-            enddate: null,
+            startdate: moment(new Date()).format('YYYY-MM-DD'),
+            enddate: '',
             message: ''
         }
     }
     async createGame(){
+        this.setState({'message': ''});
+        if(this.state.gamename == ''){
+            this.setState({'message': 'Invalid data'});
+            return;
+        }
         try {
-            const res = await axios.post(this.props.endpoint, this.state);
+            const res = await axios(this.props.endpoint, { 
+                method: 'post',
+                data: this.state, 
+                withCredentials: true
+            });
             this.props.success(res.response);
             this.setState({ message: "Game Created"});
             return;
@@ -38,8 +48,8 @@ class CreateGame extends React.Component {
                     type="text"
                     className="text-input"
                     placeholder="Name"
-                    onChange={e => this.setState({"name": e.target.value})}
-                    value={this.state.name} />
+                    onChange={e => this.setState({"gamename": e.target.value})}
+                    value={this.state.gamename} />
             </div>
             <div>
                 <input

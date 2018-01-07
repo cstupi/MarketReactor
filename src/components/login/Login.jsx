@@ -1,7 +1,7 @@
 // Dependencies
 import React from 'react';
 import PropTypes from 'prop-types';
-import axios from '../../../node_modules/axios/dist/axios';
+import axios from 'axios';
 // Styles
 import './Login.scss';
 

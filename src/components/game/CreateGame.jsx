@@ -8,7 +8,7 @@ class CreateGame extends React.Component {
         super(props);
         this.state = {
             gamename: '',
-            password: '',
+            gamepassword: '',
             startdate: moment(new Date()).format('YYYY-MM-DD'),
             enddate: '',
             message: ''
@@ -56,8 +56,8 @@ class CreateGame extends React.Component {
                     type="text"
                     className="text-input"
                     placeholder="Optional Password"
-                    onChange={e => this.setState({"password": e.target.value})}
-                    value={this.state.password} />
+                    onChange={e => this.setState({"gamepassword": e.target.value})}
+                    value={this.state.gamepassword} />
             </div>
             <div>
                 <input

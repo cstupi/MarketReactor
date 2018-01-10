@@ -1,7 +1,16 @@
 // Dependencies
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom'
+
 import PropTypes from 'prop-types';
 import axios from 'axios';
+//import Auth from '../../../auth/auth';
 // Styles
 import './Login.scss';
 
@@ -12,28 +21,26 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            message: ''
+            message: '',
+            redirectToReferrer: false,
+            Auth: this.props.Auth
         };
     }
-    async login(){
-        try { 
-            const res = await axios.post(this.props.endpoint, this.state);
-            this.props.success(res);
-            this.setState({message: "Success!"});
-            return res;
-        } catch(ex){
-            if(ex.response.status === 401){
-                if(this.props.failure)
-                    this.props.failure(401);
-                this.setState({password: '', message: "Wrong Credentials"});
-                return 401;
-            }
-            this.setState({message: "Error Connecting!"});
-            return "Error making connecting to login server";
-        }
+    login(){
+        this.props.Auth.login(this.state.username, this.state.password).then((res) => {
+            console.log(res);
+            this.setState({ redirectToReferrer: true });
+        });    
     }
     render(){
-        return <div>
+        const { from } = this.props.location.state || { from: { pathname: '/' } }
+        const { redirectToReferrer } = this.state
+        if (redirectToReferrer) {
+          return (
+            <Redirect to={from}/>
+          )
+        }
+        return <form>
             <div>
                 <input 
                     type="text"
@@ -56,7 +63,7 @@ class Login extends React.Component {
             <div className="login-results">
                 <span>{this.state.message}</span>
             </div>
-        </div>
+        </form>
     }
 }
 Login.propTypes = {
@@ -64,4 +71,4 @@ Login.propTypes = {
     success: PropTypes.func.isRequired,
     failure: PropTypes.func
 };
-export default Login;
+export default withRouter(Login);

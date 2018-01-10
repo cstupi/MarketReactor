@@ -10,7 +10,7 @@ import {
 
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Auth from '../../../auth/auth';
+//import Auth from '../../../auth/auth';
 // Styles
 import './Login.scss';
 
@@ -22,11 +22,13 @@ class Login extends React.Component {
             username: '',
             password: '',
             message: '',
-            redirectToReferrer: false
+            redirectToReferrer: false,
+            Auth: this.props.Auth
         };
     }
     login(){
-        Auth.login(this.state.username, this.state.password).then(() => {
+        this.props.Auth.login(this.state.username, this.state.password).then((res) => {
+            console.log(res);
             this.setState({ redirectToReferrer: true });
         });    
     }

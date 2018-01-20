@@ -1,6 +1,6 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import {HotModuleReplacementPlugin} from 'webpack';
+//import {HotModuleReplacementPlugin} from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 const defaultEnv = {

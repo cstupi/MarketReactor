@@ -56,6 +56,12 @@ const UserAuth = {
     }
 }
 
+const NoMatch = ({ location }) => (
+  <div>
+    <h3>No match for <code>{location.pathname}</code></h3>
+  </div>
+)
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     UserAuth.isAuthenticated ? (
@@ -86,14 +92,16 @@ class Content extends React.Component {
     super(props);
     this.state = {
       'GameManager': '',
-      'Auth': UserAuth
+      'Auth': UserAuth,
+      'message': ''
     }
   }
   componentDidMount(){
-    UserAuth.refresh();
+    //UserAuth.refresh();
+    this.refresh();
   }
   refresh(){
-    UserAuth.refresh();
+    UserAuth.refresh().then(() => this.setState({"message": 'REFRESH PLEASE'}));
     this.setState({
       'GameManager': ''
     });
@@ -102,34 +110,24 @@ class Content extends React.Component {
     });
 
   }
-  async logout(){
-    const res = await axios.get(`${api_server}/api/user/logout`);
-    Auth.signout
-    history.push('/');
-  }
   render() {
-    let auth = this.state.UserAuth;
     return (
       <div className="content">
-        
+        {this.state.message}
         <Router>
           <div>
-            <LogoutButton />
+            <LogoutButton isAuthenticated={this.state.Auth.isAuthenticated} />
             <ul>
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/Login">Login</Link></li>
-              <li><Link to="/Games">Games</Link></li>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/games">Games</Link></li>
             </ul>
           
             <hr/>
-            <Route exact path="/" component={() => <Login 
-              endpoint={`${api_server}/api/user/login`} 
-              Auth={UserAuth}
-              success={() => console.log("Logged In")}
-              failure={() => UserAuth.isAuthenticated = false }
-              />} />
-            <Route exact path="/Login" component={() => <Login Auth={UserAuth} endpoint={`${api_server}/api/user/login`} success={this.refresh.bind(this)} />} />
-            <PrivateRoute exact path="/Games" component={() => <GameManager endpoint={`${api_server}/api/game`} />} />
+            <Route exact path="/" component={() => <div>HELLO</div>} />
+            <Route exact path="/login" component={() => <Login Auth={UserAuth} endpoint={`${api_server}/api/user/login`} success={this.refresh.bind(this)} />} />
+            <PrivateRoute exact path="/games" component={() => <GameManager endpoint={`${api_server}/api/game`} />} />
+            <Route component={NoMatch} />
           </div>
         </Router>
 
